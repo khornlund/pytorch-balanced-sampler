@@ -1,0 +1,14 @@
+name: pytorch_balanced_sampler
+
+channels:
+  - pytorch
+  - conda-forge
+
+dependencies:
+  - python=3.6
+  - numpy
+  - pandas
+  - matplotlib
+  - pytorch
+  - pytest
+  - flake8
