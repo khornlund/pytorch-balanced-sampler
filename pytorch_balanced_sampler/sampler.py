@@ -32,6 +32,11 @@ class SamplerFactory:
             class distribution.
             When `alpha` == 1, the batch class distribution will approximate a uniform distribution,
             with equal number of samples from each class.
+
+        kind : str ['fixed' | 'random']
+            The kind of sampler. `Fixed` will ensure each batch contains a constant proportion of
+            samples from each class. `Random` will simply sample with replacement according to the
+            calculated weights.
         """
         if kind == 'random':
             return self.random(class_idxs, batch_size, n_batches, alpha)
@@ -105,6 +110,7 @@ class SamplerFactory:
 
 class WeightedRandomBatchSampler(BatchSampler):
     """
+    Samples with replacement according to the provided weights.
 
     Parameters
     ----------
