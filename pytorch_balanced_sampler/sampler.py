@@ -6,13 +6,13 @@ from .utils import setup_logger
 
 class SamplerFactory:
     """
-    Factory class to create a `ClassWeightedBatchSampler`.
+    Factory class to create balanced samplers.
     """
 
     def __init__(self, verbose=0):
         self.logger = setup_logger(self.__class__.__name__, verbose)
 
-    def random(self, class_idxs, batch_size, n_batches, alpha):
+    def get(self, class_idxs, batch_size, n_batches, alpha, kind):
         """
         Parameters
         ----------
@@ -33,32 +33,19 @@ class SamplerFactory:
             When `alpha` == 1, the batch class distribution will approximate a uniform distribution,
             with equal number of samples from each class.
         """
+        if kind == 'random':
+            return self.random(class_idxs, batch_size, n_batches, alpha)
+        if kind == 'fixed':
+            return self.fixed(class_idxs, batch_size, n_batches, alpha)
+        raise Exception(f'Received kind {kind}, must be `random` or `fixed`')
+
+    def random(self, class_idxs, batch_size, n_batches, alpha):
         self.logger.info(f'Creating `{WeightedRandomBatchSampler.__class__.__name__}`...')
         class_sizes, weights = self._weight_classes(class_idxs, alpha)
-        class_weights = self._sample_rates(weights, class_sizes)
-        return WeightedRandomBatchSampler(class_weights, class_idxs, batch_size, n_batches)
+        sample_rates = self._sample_rates(weights, class_sizes)
+        return WeightedRandomBatchSampler(sample_rates, class_idxs, batch_size, n_batches)
 
     def fixed(self, class_idxs, batch_size, n_batches, alpha):
-        """
-        Parameters
-        ----------
-        class_idxs : 2D list of ints
-            List of sample indices for each class. Eg. [[0, 1], [2, 3]] implies indices 0, 1
-            belong to class 0, and indices 2, 3 belong to class 1.
-
-        batch_size : int
-            The batch size to use.
-
-        n_batches : int
-            The number of batches per epoch.
-
-        alpha : numeric in range [0, 1]
-            Weighting term used to determine weights of each class in each batch.
-            When `alpha` == 0, the batch class distribution will approximate the training population
-            class distribution.
-            When `alpha` == 1, the batch class distribution will approximate a uniform distribution,
-            with equal number of samples from each class.
-        """
         self.logger.info(f'Creating `{WeightedFixedBatchSampler.__class__.__name__}`...')
         class_sizes, weights = self._weight_classes(class_idxs, alpha)
         class_samples_per_batch = self._fix_batches(weights, class_sizes, batch_size, n_batches)
