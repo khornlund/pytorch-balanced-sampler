@@ -2,7 +2,7 @@
 pytorch_balanced_sampler
 ========================
 
-PyTorch implementation of ``BatchSampler``s that under/over sample according to a chosen parameter
+PyTorch implementations of `BatchSampler` that under/over sample according to a chosen parameter
 alpha, in order to create a balanced training distribution.
 
 Usage
