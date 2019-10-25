@@ -1,5 +1,5 @@
 ========================
-pytorch_balanced_sampler
+PyTorch Balanced Sampler
 ========================
 
 PyTorch implementations of `BatchSampler` that under/over sample according to a chosen parameter
