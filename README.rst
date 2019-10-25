@@ -5,7 +5,7 @@ pytorch_balanced_sampler
 PyTorch implementations of `BatchSampler` that under/over sample according to a chosen parameter
 ``alpha``, in order to create a balanced training distribution.
 
-.. image:: ./resources/sample-distributions-2019-data.png
+.. image:: ./resources/sample-distributions-2015-data.png
 
 Usage
 =====
@@ -52,7 +52,7 @@ distribution to be between true distribution (``alpha = 0``), and a uniform dist
 Overrepresented classes will be undersampled, and underrepresented classes oversampled. Here's an
 example from an imbalanced data distribution I was working with a while ago:
 
-.. image:: ./resources/sample-distributions-2019-data.png
+.. image:: ./resources/sample-distributions-2015-data.png
 
 Fixed Batch Distributions
 -------------------------
